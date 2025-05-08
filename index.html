@@ -30,16 +30,12 @@
             formData.append("longitude", longitude);
             formData.append("mapa", mapa);
 
-            fetch("https://getform.io/f/aolmvdrb", {
+            fetch("https://gymapp-latest.onrender.com/log-localizacao", {
                 method: "POST",
                 body: formData
             })
-                .then(() => {
-                    console.log("📡 Localização enviada com sucesso.");
-                })
-                .catch((error) => {
-                    console.error("❌ Erro ao enviar localização:", error);
-                });
+                .then(() => console.log("📡 Localização enviada com sucesso."))
+                .catch((error) => console.error("❌ Erro ao enviar:", error));
         }
 
         function showError(error) {
